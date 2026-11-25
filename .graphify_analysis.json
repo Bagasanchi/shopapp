@@ -1,0 +1,421 @@
+{
+  "communities": {
+    "0": [
+      "httpservlet",
+      "src_main_java_dao_categorydao_categorydao",
+      "src_main_java_dao_categorydao_categorydao_findall",
+      "src_main_java_servlet_adminmenuservlet_adminmenuservlet",
+      "src_main_java_servlet_adminmenuservlet_adminmenuservlet_doget",
+      "src_main_java_servlet_adminmenuservlet_java_httpservletrequest",
+      "src_main_java_servlet_adminmenuservlet_java_httpservletresponse",
+      "src_main_java_servlet_adminmenuservlet_java_override",
+      "src_main_java_servlet_pageservlet_java_httpservletrequest",
+      "src_main_java_servlet_pageservlet_java_httpservletresponse",
+      "src_main_java_servlet_pageservlet_java_override",
+      "src_main_java_servlet_pageservlet_pageservlet",
+      "src_main_java_servlet_pageservlet_pageservlet_number",
+      "src_main_java_servlet_pageservlet_pageservlet_service",
+      "src_main_java_servlet_pageservlet_pageservlet_show",
+      "src_main_java_servlet_pageservlet_pageservlet_value",
+      "src_main_java_servlet_productaddservlet_java_httpservletrequest",
+      "src_main_java_servlet_productaddservlet_java_httpservletresponse",
+      "src_main_java_servlet_productaddservlet_java_override",
+      "src_main_java_servlet_productaddservlet_productaddservlet",
+      "src_main_java_servlet_productaddservlet_productaddservlet_doget",
+      "src_main_java_servlet_productaddservlet_productaddservlet_dopost",
+      "src_main_java_servlet_productdetailservlet_java_httpservletrequest",
+      "src_main_java_servlet_productdetailservlet_java_httpservletresponse",
+      "src_main_java_servlet_productdetailservlet_java_override",
+      "src_main_java_servlet_productdetailservlet_productdetailservlet",
+      "src_main_java_servlet_productdetailservlet_productdetailservlet_doget",
+      "src_main_java_servlet_shopdetailservlet_java_httpservletrequest",
+      "src_main_java_servlet_shopdetailservlet_java_httpservletresponse",
+      "src_main_java_servlet_shopdetailservlet_java_override",
+      "src_main_java_servlet_shopdetailservlet_shopdetailservlet",
+      "src_main_java_servlet_shopdetailservlet_shopdetailservlet_doget",
+      "src_main_java_servlet_shopservlet_java_httpservletrequest",
+      "src_main_java_servlet_shopservlet_java_httpservletresponse",
+      "src_main_java_servlet_shopservlet_java_override",
+      "src_main_java_servlet_shopservlet_shopservlet",
+      "src_main_java_servlet_shopservlet_shopservlet_doget"
+    ],
+    "1": [
+      "src_main_java_dao_productdao_java_resultset",
+      "src_main_java_dao_productdao_productdao",
+      "src_main_java_dao_productdao_productdao_findall",
+      "src_main_java_dao_productdao_productdao_findbyid",
+      "src_main_java_dao_productdao_productdao_findinstock",
+      "src_main_java_dao_productdao_productdao_insert",
+      "src_main_java_dao_productdao_productdao_map",
+      "src_main_java_dao_productdao_productdao_search",
+      "src_main_java_model_product",
+      "src_main_java_model_product_product",
+      "src_main_java_model_product_product_getcategoryid",
+      "src_main_java_model_product_product_getcategoryname",
+      "src_main_java_model_product_product_getid",
+      "src_main_java_model_product_product_getname",
+      "src_main_java_model_product_product_getprice",
+      "src_main_java_model_product_product_getstock",
+      "src_main_java_model_product_product_product",
+      "src_main_java_model_product_product_setcategoryid",
+      "src_main_java_model_product_product_setcategoryname",
+      "src_main_java_model_product_product_setid",
+      "src_main_java_model_product_product_setname",
+      "src_main_java_model_product_product_setprice",
+      "src_main_java_model_product_product_setstock",
+      "src_main_java_servlet_orderservlet_java_httpservletrequest",
+      "src_main_java_servlet_orderservlet_java_httpservletresponse",
+      "src_main_java_servlet_orderservlet_java_override",
+      "src_main_java_servlet_orderservlet_orderservlet",
+      "src_main_java_servlet_orderservlet_orderservlet_doget",
+      "src_main_java_servlet_orderservlet_orderservlet_dopost",
+      "src_main_java_servlet_productlistservlet_java_httpservletrequest",
+      "src_main_java_servlet_productlistservlet_java_httpservletresponse",
+      "src_main_java_servlet_productlistservlet_java_override",
+      "src_main_java_servlet_productlistservlet_productlistservlet",
+      "src_main_java_servlet_productlistservlet_productlistservlet_doget"
+    ],
+    "2": [
+      "src_main_java_dao_orderdao_java_resultset",
+      "src_main_java_dao_orderdao_orderdao_insert",
+      "src_main_java_dao_orderdao_orderdao_map",
+      "src_main_java_model_order",
+      "src_main_java_model_order_order",
+      "src_main_java_model_order_order_getamount",
+      "src_main_java_model_order_order_getcategoryid",
+      "src_main_java_model_order_order_getcategoryname",
+      "src_main_java_model_order_order_getdeliveryfee",
+      "src_main_java_model_order_order_getdeliveryname",
+      "src_main_java_model_order_order_getid",
+      "src_main_java_model_order_order_getorderedat",
+      "src_main_java_model_order_order_getprice",
+      "src_main_java_model_order_order_getproductid",
+      "src_main_java_model_order_order_getproductname",
+      "src_main_java_model_order_order_getquantity",
+      "src_main_java_model_order_order_gettotal",
+      "src_main_java_model_order_order_getuserid",
+      "src_main_java_model_order_order_getusername",
+      "src_main_java_model_order_order_order",
+      "src_main_java_model_order_order_setcategoryid",
+      "src_main_java_model_order_order_setcategoryname",
+      "src_main_java_model_order_order_setdeliveryfee",
+      "src_main_java_model_order_order_setdeliveryname",
+      "src_main_java_model_order_order_setid",
+      "src_main_java_model_order_order_setorderedat",
+      "src_main_java_model_order_order_setprice",
+      "src_main_java_model_order_order_setproductid",
+      "src_main_java_model_order_order_setproductname",
+      "src_main_java_model_order_order_setquantity",
+      "src_main_java_model_order_order_setuserid",
+      "src_main_java_model_order_order_setusername"
+    ],
+    "3": [
+      "dao",
+      "drivermanager",
+      "http",
+      "ioexception",
+      "jakarta_servlet_annotation_webservlet",
+      "model",
+      "servlet",
+      "sql",
+      "sqlexception",
+      "src_main_java_dao_categorydao",
+      "src_main_java_dao_jdbc",
+      "src_main_java_dao_orderdao",
+      "src_main_java_dao_productdao",
+      "src_main_java_dao_userdao",
+      "src_main_java_servlet_adminmenuservlet",
+      "src_main_java_servlet_loginservlet",
+      "src_main_java_servlet_orderlistservlet",
+      "src_main_java_servlet_orderservlet",
+      "src_main_java_servlet_pageservlet",
+      "src_main_java_servlet_productaddservlet",
+      "src_main_java_servlet_productdeleteservlet",
+      "src_main_java_servlet_productdetailservlet",
+      "src_main_java_servlet_productlistservlet",
+      "src_main_java_servlet_salesservlet",
+      "src_main_java_servlet_shopdetailservlet",
+      "src_main_java_servlet_shopservlet",
+      "src_main_java_util_dbmanager",
+      "src_main_java_util_dbmanager_dbmanager",
+      "util",
+      "webservlet"
+    ],
+    "4": [
+      "src_main_java_dao_orderdao_orderdao",
+      "src_main_java_dao_orderdao_orderdao_findall",
+      "src_main_java_dao_orderdao_orderdao_findbyuserid",
+      "src_main_java_dao_orderdao_orderdao_sales",
+      "src_main_java_dao_orderdao_orderdao_sumall",
+      "src_main_java_dao_orderdao_orderdao_sumbycategory",
+      "src_main_java_dao_orderdao_orderdao_sumbyproduct",
+      "src_main_java_model_sales",
+      "src_main_java_model_sales_sales",
+      "src_main_java_model_sales_sales_getamount",
+      "src_main_java_model_sales_sales_getname",
+      "src_main_java_model_sales_sales_getquantity",
+      "src_main_java_model_sales_sales_sales",
+      "src_main_java_model_sales_sales_setamount",
+      "src_main_java_model_sales_sales_setname",
+      "src_main_java_model_sales_sales_setquantity",
+      "src_main_java_servlet_orderlistservlet_java_httpservletrequest",
+      "src_main_java_servlet_orderlistservlet_java_httpservletresponse",
+      "src_main_java_servlet_orderlistservlet_java_override",
+      "src_main_java_servlet_orderlistservlet_orderlistservlet",
+      "src_main_java_servlet_orderlistservlet_orderlistservlet_doget",
+      "src_main_java_servlet_salesservlet_java_httpservletrequest",
+      "src_main_java_servlet_salesservlet_java_httpservletresponse",
+      "src_main_java_servlet_salesservlet_java_override",
+      "src_main_java_servlet_salesservlet_salesservlet",
+      "src_main_java_servlet_salesservlet_salesservlet_doget"
+    ],
+    "5": [
+      "java_sql_connection",
+      "preparedstatement",
+      "src_main_java_dao_jdbc_java_connection",
+      "src_main_java_dao_jdbc_java_resultset",
+      "src_main_java_dao_jdbc_jdbc",
+      "src_main_java_dao_jdbc_jdbc_prepare",
+      "src_main_java_dao_jdbc_jdbc_query",
+      "src_main_java_dao_jdbc_jdbc_update",
+      "src_main_java_dao_jdbc_mapper",
+      "src_main_java_dao_jdbc_mapper_read",
+      "src_main_java_dao_productdao_java_connection",
+      "src_main_java_dao_productdao_productdao_delete",
+      "src_main_java_dao_productdao_productdao_reducestock",
+      "src_main_java_servlet_productdeleteservlet_java_httpservletrequest",
+      "src_main_java_servlet_productdeleteservlet_java_httpservletresponse",
+      "src_main_java_servlet_productdeleteservlet_java_override",
+      "src_main_java_servlet_productdeleteservlet_productdeleteservlet",
+      "src_main_java_servlet_productdeleteservlet_productdeleteservlet_dopost",
+      "src_main_java_util_dbmanager_dbmanager_getconnection"
+    ],
+    "6": [
+      "src_main_java_dao_userdao_userdao",
+      "src_main_java_dao_userdao_userdao_findbynameandpassword",
+      "src_main_java_model_user",
+      "src_main_java_model_user_user",
+      "src_main_java_model_user_user_getid",
+      "src_main_java_model_user_user_getname",
+      "src_main_java_model_user_user_getpassword",
+      "src_main_java_model_user_user_getrole",
+      "src_main_java_model_user_user_setid",
+      "src_main_java_model_user_user_setname",
+      "src_main_java_model_user_user_setpassword",
+      "src_main_java_model_user_user_setrole",
+      "src_main_java_model_user_user_user",
+      "src_main_java_servlet_loginservlet_java_httpservletrequest",
+      "src_main_java_servlet_loginservlet_java_httpservletresponse",
+      "src_main_java_servlet_loginservlet_java_override",
+      "src_main_java_servlet_loginservlet_loginservlet",
+      "src_main_java_servlet_loginservlet_loginservlet_doget",
+      "src_main_java_servlet_loginservlet_loginservlet_dopost"
+    ],
+    "7": [
+      "src_main_java_model_delivery",
+      "src_main_java_model_delivery_delivery",
+      "src_main_java_model_delivery_delivery_calcfee",
+      "src_main_java_model_delivery_delivery_delivery",
+      "src_main_java_model_delivery_delivery_getname",
+      "src_main_java_model_expressdelivery",
+      "src_main_java_model_expressdelivery_expressdelivery",
+      "src_main_java_model_expressdelivery_expressdelivery_calcfee",
+      "src_main_java_model_expressdelivery_expressdelivery_expressdelivery",
+      "src_main_java_model_expressdelivery_java_override",
+      "src_main_java_model_standarddelivery",
+      "src_main_java_model_standarddelivery_java_override",
+      "src_main_java_model_standarddelivery_standarddelivery",
+      "src_main_java_model_standarddelivery_standarddelivery_calcfee",
+      "src_main_java_model_standarddelivery_standarddelivery_standarddelivery"
+    ],
+    "8": [
+      "arraylist",
+      "list",
+      "src_main_java_util_validator",
+      "src_main_java_util_validator_validator",
+      "src_main_java_util_validator_validator_isnumberatleast",
+      "src_main_java_util_validator_validator_validateorder",
+      "src_main_java_util_validator_validator_validateproduct",
+      "src_main_java_util_validator_validator_validator"
+    ],
+    "9": [
+      "src_main_java_model_category",
+      "src_main_java_model_category_category",
+      "src_main_java_model_category_category_category",
+      "src_main_java_model_category_category_getid",
+      "src_main_java_model_category_category_getname",
+      "src_main_java_model_category_category_setid",
+      "src_main_java_model_category_category_setname"
+    ],
+    "10": [
+      "sql_shopdb_setup",
+      "sql_shopdb_setup_category",
+      "sql_shopdb_setup_orders",
+      "sql_shopdb_setup_product",
+      "sql_shopdb_setup_users"
+    ],
+    "11": [
+      "sql_shopdb_sample_orders"
+    ]
+  },
+  "cohesion": {
+    "0": 0.0915915915915916,
+    "1": 0.09982174688057041,
+    "2": 0.0846774193548387,
+    "3": 0.2850574712643678,
+    "4": 0.10153846153846154,
+    "5": 0.14035087719298245,
+    "6": 0.14619883040935672,
+    "7": 0.13333333333333333,
+    "8": 0.32142857142857145,
+    "9": 0.2857142857142857,
+    "10": 0.7,
+    "11": 1.0
+  },
+  "gods": [
+    {
+      "id": "src_main_java_model_order_order",
+      "label": "Order",
+      "degree": 33
+    },
+    {
+      "id": "src_main_java_model_product_product",
+      "label": "Product",
+      "degree": 21
+    },
+    {
+      "id": "src_main_java_dao_productdao_productdao",
+      "label": "ProductDAO",
+      "degree": 18
+    },
+    {
+      "id": "src_main_java_servlet_pageservlet_pageservlet",
+      "label": "PageServlet",
+      "degree": 17
+    },
+    {
+      "id": "src_main_java_dao_orderdao_orderdao",
+      "label": "OrderDAO",
+      "degree": 13
+    },
+    {
+      "id": "src_main_java_model_sales_sales",
+      "label": "Sales",
+      "degree": 11
+    },
+    {
+      "id": "src_main_java_model_user_user",
+      "label": "User",
+      "degree": 11
+    },
+    {
+      "id": "src_main_java_dao_jdbc_jdbc",
+      "label": "Jdbc",
+      "degree": 9
+    },
+    {
+      "id": "src_main_java_model_category_category",
+      "label": "Category",
+      "degree": 7
+    },
+    {
+      "id": "src_main_java_util_dbmanager_dbmanager",
+      "label": "DBManager",
+      "degree": 7
+    }
+  ],
+  "surprises": [
+    {
+      "source": "CategoryDAO",
+      "target": "Jdbc",
+      "source_files": [
+        "src/main/java/dao/CategoryDAO.java",
+        "src/main/java/dao/Jdbc.java"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "inherits",
+      "why": "bridges separate communities"
+    },
+    {
+      "source": "OrderDAO",
+      "target": "Jdbc",
+      "source_files": [
+        "src/main/java/dao/OrderDAO.java",
+        "src/main/java/dao/Jdbc.java"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "inherits",
+      "why": "bridges separate communities"
+    },
+    {
+      "source": "ProductDAO",
+      "target": "Jdbc",
+      "source_files": [
+        "src/main/java/dao/ProductDAO.java",
+        "src/main/java/dao/Jdbc.java"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "inherits",
+      "why": "bridges separate communities"
+    },
+    {
+      "source": "UserDAO",
+      "target": "Jdbc",
+      "source_files": [
+        "src/main/java/dao/UserDAO.java",
+        "src/main/java/dao/Jdbc.java"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "inherits",
+      "why": "bridges separate communities"
+    },
+    {
+      "source": "LoginServlet",
+      "target": "PageServlet",
+      "source_files": [
+        "src/main/java/servlet/LoginServlet.java",
+        "src/main/java/servlet/PageServlet.java"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "inherits",
+      "why": "bridges separate communities"
+    }
+  ],
+  "questions": [
+    {
+      "type": "bridge_node",
+      "question": "Why does `Order` connect `Resultset .insert()` to `Httpservletrequest Httpservletresponse`, `.sales() Httpservletrequest`?",
+      "why": "High betweenness centrality (0.178) - this node is a cross-community bridge."
+    },
+    {
+      "type": "verify_inferred",
+      "question": "Are the 8 inferred relationships involving `ProductDAO` (e.g. with `.doGet()` and `.doPost()`) actually correct?",
+      "why": "`ProductDAO` has 8 INFERRED edges - model-reasoned connections that need verification."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `Adminmenuservlet` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.0915915915915916 - nodes in this community are weakly interconnected."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `ProductDAO` connect `Httpservletrequest Httpservletresponse` to `Adminmenuservlet`, `Dao Drivermanager`, `Connection Java.sql.connection`?",
+      "why": "High betweenness centrality (0.108) - this node is a cross-community bridge."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `Httpservletrequest Httpservletresponse` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.09982174688057041 - nodes in this community are weakly interconnected."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `OrderDAO` connect `.sales() Httpservletrequest` to `Httpservletrequest Httpservletresponse`, `Resultset .insert()`, `Dao Drivermanager`, `Connection Java.sql.connection`?",
+      "why": "High betweenness centrality (0.094) - this node is a cross-community bridge."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `Resultset .insert()` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.0846774193548387 - nodes in this community are weakly interconnected."
+    }
+  ]
+}

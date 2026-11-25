@@ -1,0 +1,22 @@
+[
+  {
+    "file": "graphify-out/pdftext/ECサイト_クラス図・シーケンス図.txt",
+    "pages": 30,
+    "chars": 10270
+  },
+  {
+    "file": "graphify-out/pdftext/ECサイト_機能設計書.txt",
+    "pages": 15,
+    "chars": 13614
+  },
+  {
+    "file": "graphify-out/pdftext/ECサイト_画面設計書.txt",
+    "pages": 19,
+    "chars": 8131
+  },
+  {
+    "file": "graphify-out/pdftext/ECサイト_要件定義書.txt",
+    "pages": 8,
+    "chars": 4962
+  }
+]

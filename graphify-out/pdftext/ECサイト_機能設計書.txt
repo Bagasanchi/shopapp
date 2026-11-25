@@ -1,0 +1,426 @@
+1 
+ECサイト 機能設計書 
+ECサイト（shopapp） 
+ 
+ 
+文書名 ECサイト 機能設計書 
+システム名 ECサイト（shopapp） 
+版数 2.0 
+作成日 2026-10-17 
+作成者 Kana 
+ 
+この文書は、画面設計書で決めた画面と機能を、プログラムとしてどう作るかをまとめたものです（詳細設計）。 URL 
+と Servlet、処理の流れ、クラスとメソッド、画面とやり取りする名前を決めます。 
+ 2 
+改訂履歴 
+版数 日付 改訂内容 作成者 
+1.0 2026-10-08 初版 Kana 
+1.1 2026-10-14 配送方法（Delivery・StandardDelivery・ExpressDelivery）を追
+加。orders に配送方法と送料を追加。購入履歴（findByUserId）を
+注文完了の処理に追加 
+Kana 
+2.0 2026-10-17 要件定義書・画面設計書に合わせて機能 ID・画面 ID・メッセージ IDを
+追加。JSP の作り方のルールを画面設計書から移動。授業の進め方に関
+する内容を削除 
+Kana 
+ 
+関連文書 
+この文書は、次の文書の 1つです。上から順に「何を作るか」から「どう作るか」へ細かくなっていきます。 
+工程 文書 内容 
+要件定義 要件定義書 何を作るか（利用者・機能一覧・非機能要件・制約） 
+基本設計 画面設計書 画面の一覧・遷移・項目・メッセージ（利用者から見える仕
+様） 
+基本設計 DB定義書 テーブル・列・初期データ 
+詳細設計 機能設計書（この文書） URL と Servlet、処理の流れ、クラス・メソッド 
+詳細設計 クラス図・シーケンス図 クラスのつながりと、処理の順番の図 
+ 3 
+1. 概要 
+1.1 システムの構成 
+ブラウザから送られたリクエストを Servlet が受け取り、DAO を使ってデータベースを操作し、結果を JSP に渡して画
+面を作ります（MVC モデル）。 
+役割 作るもの 内容 
+画面（View） JSP（WEB-INF の中） Servlet から受け取った値を HTML にして表示する 
+処理（Controller） Servlet（servlet パッケージ） リクエストを受け取り、入力のチェック、DAO の呼び出
+し、画面の切りかえを行う 
+データ（Model） model・dao・util パッケージ model はデータを入れるクラス、DAO はデータベースを
+操作するクラス、util は共通の部品 
+データベース MySQL の shopdb テーブルは DB定義書のとおり 
+1.2 前提 
+利用者・機能・制約は要件定義書を、画面と項目・メッセージは画面設計書を見てください。この文書の機能 ID
+（F-xx）・画面 ID（S-xx）・メッセージ ID（M-xx）は、それらの文書と同じ番号です。 
+ 4 
+2. 共通のルール 
+2.1 プロジェクトの構成 
+動的 Webプロジェクト shopapp を作り、次の構成にします。URL は 
+http://localhost:8080/shopapp/products のようになります。 
+場所 置くもの 
+src/main/java/util DBManager、Validator（どちらも配布ファイル） 
+src/main/java/model Product、Category、User、Order、Sales、Delivery、
+StandardDelivery、ExpressDelivery 
+src/main/java/dao ProductDAO、CategoryDAO、UserDAO、OrderDAO 
+src/main/java/servlet Servlet のクラス（3章の表） 
+src/main/java/main Main（DAO の動きをコンソールで確かめるクラス） 
+src/main/webapp/WEB-INF JSP ファイル（ブラウザから直接開けないように、ここに置く） 
+src/main/webapp/WEB-INF/lib jar ファイル 3つ（MySQL Connector/J、JSTL の API と実装） 
+src/main/webapp/css style.css（配布ファイル。WEB-INF の中には置かない） 
+ 
+2.2 プログラムを書くときのルール 
+・ データベースへの接続は、DBManager.getConnection() を使う 
+・ 入力チェックは、配布ファイルの Validator を使う（商品の登録は validateProduct、注文の数量は 
+validateOrder）。返ってきたエラーメッセージの List が空でなければ、入力画面に戻す 
+・ DAO のメソッドは、すべて throws SQLException を付ける。Servlet では try-catch で受け取り、catch 
+の中で e.printStackTrace(); を呼ぶ 
+・ SQL に値を入れるときは、必ずプレースホルダ（?）を使う 
+・ 登録・削除・更新が終わったら、リダイレクトで一覧画面に移る（注文は除く） 
+・ model のクラスを作ったら、Main で DAO のメソッドを呼び出して、正しく動くか確かめる 
+2.3 JSP の作り方のルール 
+・ JSP はすべて src/main/webapp/WEB-INF の中に置き、Servlet からフォワードして表示する 
+・ 1行目に <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %> 
+を書く 
+・ JSTL（<c:forEach>、<c:if>）を使う JSP は、2行目に <%@ taglib prefix="c" 
+uri="jakarta.tags.core" %> を書く 
+・ <head> に <meta charset="UTF-8">、<title>、<link rel="stylesheet" 
+href="css/style.css"> を書く 
+・ リンクの href やフォームの action は、products のように / を付けずに書く 
+CSS（style.css）で使う class は次の 3つです。表・フォーム・ボタン・見出しは、タグを書くだけで見た目が付き5 
+ます。 
+class 付ける場所 見た目 
+customer 購入者の画面（S-06〜S-09）の <body> 見出し・表の見出し行・ボタン・リンクがオレンジに
+なる。管理者の画面は class を書かない
+（紺） 
+error エラーメッセージの <p> 赤い文字 
+success 完了メッセージの <p> 緑の太字 
+画面の部品 タグ 
+タイトル・見出し <h1>（1画面に 1つ）、小見出しは <h2> 
+一覧の表 <table>。1行目は <th> の見出し行、2行目からは <c:forEach> で繰り返す 
+詳細の表 <table>。1行に <th>（項目名）と <td>（値）を 1つずつ 
+入力・選択 <label> で <input> や <select> を囲む 
+ボタン <button type="submit">（フォームの中に置く） 
+リンク・メッセージ <p> の中に書く 
+2.4 メッセージ 
+画面に表示するメッセージの文字は、画面設計書 2.2 のとおりにします。この文書では、メッセージを ID（M-xx）
+で書きます。 
+ 6 
+3. URL と Servlet の一覧 
+URL メソッド Servlet 行き先 画面 ID 
+/products GET ProductListServlet productList.jsp S-01 
+/productDetail?id=1 GET ProductDetailServlet productDetail.jsp S-02 
+/productDelete POST ProductDeleteServlet /products にリダイレクト S-02 → S-
+01 
+/productAdd GET ProductAddServlet productAdd.jsp S-03 
+/productAdd POST ProductAddServlet OK：/products にリダイレクト 
+エラー：productAdd.jsp 
+S-03 → S-
+01 
+/login GET LoginServlet login.jsp S-04 
+/login POST LoginServlet OK：/adminMenu にリダイレクト 
+エラー：login.jsp 
+S-04 → S-
+05 
+/adminMenu GET AdminMenuServlet adminMenu.jsp S-05 
+/shop GET ShopServlet shop.jsp S-06 
+/shopDetail?id=1 GET ShopDetailServlet shopDetail.jsp S-07 
+/order?id=1 GET OrderServlet order.jsp S-08 
+/order POST OrderServlet OK：orderDone.jsp 
+エラー：order.jsp 
+S-08 → S-
+09 
+/orders GET OrderListServlet orderList.jsp S-10 
+/sales GET SalesServlet sales.jsp S-11 
+JSP はすべて /WEB-INF/ の中に置き、Servlet からフォワードして表示します。画面の遷移図は画面設計書の 
+1.1 を見てください。 
+ 7 
+4. Servlet ごとの処理の流れ 
+どの Servlet も、DAO の呼び出しは try-catch で囲み、catch の中で e.printStackTrace(); を呼びま
+す。POST を受け取る Servlet は、最初に request.setCharacterEncoding("UTF-8"); を呼びます。 
+ProductListServlet（/products、F-13） 
+メソッド 処理の流れ 
+doGet ① ProductDAO.findAll() で一覧を取り出す 
+② productList として預ける 
+③ /WEB-INF/productList.jsp へフォワード 
+ 
+ProductDetailServlet（/productDetail、F-14） 
+メソッド 処理の流れ 
+doGet ① request.getParameter("id") を Integer.parseInt で int にする 
+② ProductDAO.findById(id) で 1件取り出す 
+③ null なら response.sendRedirect("products") で一覧へ戻る 
+④ product として預けて /WEB-INF/productDetail.jsp へフォワード 
+ 
+ProductDeleteServlet（/productDelete、F-15） 
+メソッド 処理の流れ 
+doPost ① hidden で送られた id を int にする 
+② ProductDAO.delete(id) で削除する 
+③ response.sendRedirect("products") で一覧へリダイレクト 
+ 
+ProductAddServlet（/productAdd、F-16） 
+メソッド 処理の流れ 
+doGet ① CategoryDAO.findAll() でカテゴリを取り出し、categoryList として預ける 
+② /WEB-INF/productAdd.jsp へフォワード 
+doPost ① name・categoryId・price・stock を受け取る 
+② Validator.validateProduct(name, price, stock) でチェックし、errors を受け取
+る 
+③ errors が空でなければ、errors と入力した 4つの値を預け、showForm で入力画面を表
+示する 
+④ エラーがなければ new Product(0, name, price, stock, categoryId)（数字は 
+Integer.parseInt）を作り、ProductDAO.insert で登録する 
+⑤ response.sendRedirect("products") で一覧へリダイレクト 
+showForm private メソッド。CategoryDAO.findAll() でカテゴリを取り出して categoryList として預
+け、productAdd.jsp へフォワードする（doGet と、doPost のエラーのときに使う） 
+ 8 
+LoginServlet（/login、F-11） 
+メソッド 処理の流れ 
+doGet ① /WEB-INF/login.jsp へフォワード 
+doPost ① name・password を受け取る 
+② UserDAO.findByNameAndPassword(name, password) で取り出す 
+③ ユーザーがいて、role が "admin" なら response.sendRedirect("adminMenu") 
+④ それ以外は、M-08 を入れた errors と name を預けて login.jsp へフォワード 
+ 
+AdminMenuServlet（/adminMenu、F-12） 
+メソッド 処理の流れ 
+doGet ① /WEB-INF/adminMenu.jsp へフォワード 
+ 
+ShopServlet（/shop、F-01〜F-04） 
+メソッド 処理の流れ 
+doGet ① keyword・categoryId・sort を受け取る。最初に開いたときは null なので、""・"0"・
+"idAsc" にする 
+② ProductDAO.search(keyword, categoryId, sort) で在庫がある商品を取り出す 
+③ CategoryDAO.findAll() でカテゴリを取り出す 
+④ productList・count（件数）・categoryList・keyword・categoryId・sort を預けて 
+/WEB-INF/shop.jsp へフォワード 
+ 
+ShopDetailServlet（/shopDetail、F-05） 
+メソッド 処理の流れ 
+doGet ① id を int にして ProductDAO.findById(id) で取り出す 
+② null なら response.sendRedirect("shop") 
+③ product として預けて /WEB-INF/shopDetail.jsp へフォワード 
+ 
+OrderServlet（/order、F-06〜F-08） 
+メソッド 処理の流れ 
+doGet ① id の商品を ProductDAO.findById で取り出す（null なら 
+response.sendRedirect("shop")） 
+② product と、makeDeliveryList() で作った deliveryList を預けて /WEB-
+INF/order.jsp へフォワード 
+doPost ① id・name・password・quantity・deliveryName を受け取り、商品を findById で取り出
+す 
+② Validator.validateOrder(quantity) で数量をチェックし、errors を受け取る（M-
+09） 9 
+メソッド 処理の流れ 
+③ UserDAO.findByNameAndPassword で取り出し、いないか role が "customer" でなけ
+れば、errors の先頭に M-08 を追加する 
+④ findDelivery(deliveryName) で Delivery を探す。null なら errors に M-10 を
+追加する 
+⑤ errors が空でなければ、errors・product・deliveryList・name・quantity・
+deliveryName を預けて order.jsp へフォワード 
+⑥ 送料を delivery.calcFee(価格 × 数量) で計算する 
+⑦ 商品の名前・価格・カテゴリと、配送方法の名前・送料をコピーした Order を作り、
+OrderDAO.insert で登録する 
+⑧ ProductDAO.reduceStock(id, 数量) で在庫を減らす 
+⑨ OrderDAO.findByUserId でその人の注文を取り出し、orderList として預ける（購入履
+歴） 
+⑩ Order に setUserName で名前を入れ、order として預けて /WEB-INF/orderDone.jsp 
+へフォワード（リダイレクトすると request に預けた値が使えないため） 
+makeDeliveryList private メソッド。List<Delivery> に StandardDelivery と ExpressDelivery を入れて
+返す 
+findDelivery private メソッド。makeDeliveryList() の一覧から、getName() が deliveryName と同じ
+ものを返す。なければ null 
+ 
+OrderListServlet（/orders、F-17） 
+メソッド 処理の流れ 
+doGet ① OrderDAO.findAll() で全員の注文を取り出す 
+② orderList として預けて /WEB-INF/orderList.jsp へフォワード 
+ 
+SalesServlet（/sales、F-18） 
+メソッド 処理の流れ 
+doGet ① OrderDAO.sumAll()・sumByProduct()・sumByCategory() を呼ぶ 
+② totalSales・productSales・categorySales として預けて /WEB-INF/sales.jsp へ
+フォワード 
+ 
+ 10 
+5. クラスの設計 
+フィールドはすべて private にし、getter と setter を作ります。 
+5.1 model パッケージ 
+Product（商品） 
+フィールド 型 内容 
+id int 商品の番号 
+name String 商品名 
+price int 価格 
+stock int 在庫数 
+categoryId int カテゴリの番号 
+categoryName String カテゴリ名（JOIN で取り出したもの。setter で入れる） 
+コンストラクタ：Product(int id, String name, int price, int stock, int categoryId) 登録
+するときの id は 0 を入れる 
+Category（カテゴリ） 
+フィールド 型 内容 
+id int カテゴリの番号 
+name String カテゴリ名 
+コンストラクタ：Category(int id, String name) 
+User（ユーザー） 
+フィールド 型 内容 
+id int ユーザーの番号 
+name String 名前 
+password String パスワード 
+role String admin または customer 
+コンストラクタ：User(int id, String name, String password, String role) 
+Order（注文） 
+フィールド 型 内容 
+id int 注文の番号 
+productId int 注文した商品の番号 
+productName String 注文した時点の商品名 
+price int 注文した時点の価格 
+categoryId int 注文した時点のカテゴリの番号 11 
+フィールド 型 内容 
+userId int 注文した人の番号 
+quantity int 数量 
+deliveryName String 注文した時点の配送方法の名前 
+deliveryFee int 注文した時点の送料 
+orderedAt String 注文日時（rs.getString("ordered_at") で取り出す） 
+userName String 注文した人の名前（JOIN で取り出したもの。setter で入れる） 
+コンストラクタ：Order(int id, int productId, String productName, int price, int 
+categoryId, int userId, int quantity, String deliveryName, int deliveryFee, String 
+orderedAt) 登録するときの id は 0、orderedAt は null を入れる 
+メソッド：int getAmount() price * quantity を返す。JSP では ${order.amount} で表示できる 
+メソッド：int getTotal() getAmount() + deliveryFee を返す。JSP では ${order.total} で表示
+できる 
+Delivery（配送方法、抽象クラス） 
+フィールド 型 内容 
+name String 配送方法の名前（Standard または Express） 
+public abstract class Delivery として作ります。コンストラクタ：Delivery(String name) 
+メソッド 戻り値 内容 
+getName() String 名前を返す（ふつうのメソッド） 
+calcFee(int amount) int 金額（価格 × 数量）に対する送料を返す。
+abstract を付け、中身は書かない 
+StandardDelivery・ExpressDelivery（Delivery を継承） 
+クラス コンストラクタ calcFee の中身 
+StandardDelivery super("Standard") を呼
+ぶ 
+金額が 50000 以上なら 0、それ以外は 5000 を返す 
+ExpressDelivery super("Express") を呼ぶ いつも 10000 を返す 
+どちらも extends Delivery で継承し、calcFee に @Override を付けて中身を書きます。Servlet では 
+Delivery 型の変数で扱うので、Standard か Express かを気にせずに delivery.calcFee(amount) と呼
+び出せます（ポリモーフィズム）。 
+Sales（売上の集計の 1行） 
+フィールド 型 内容 
+name String 商品名またはカテゴリ名 
+quantity int 数量の合計 
+amount int 金額の合計 
+コンストラクタ：Sales(String name, int quantity, int amount) 12 
+5.2 dao パッケージ 
+DAO のメソッドは、すべて public で、throws SQLException を付けます。 
+ProductDAO 
+メソッド 戻り値 内容 
+findAll() List<Product> すべての商品を ID の小さい順に取り出す。category と 
+JOIN して、カテゴリ名も入れる 
+findById(int id) Product ID の商品を 1件取り出す（カテゴリ名も入れる）。見つ
+からなければ null 
+delete(int id) int ID の商品を削除する。削除した件数を返す 
+insert(Product product) int 商品を登録する。登録した件数を返す 
+findInStock() List<Product> 在庫が 1以上の商品を ID の小さい順に取り出す（カテ
+ゴリ名も入れる） 
+search(String keyword, int 
+categoryId, String sort) 
+List<Product> 在庫が 1以上で、商品名に keyword を含む商品を取
+り出す（LIKE）。categoryId が 0 以外ならそのカテ
+ゴリだけ。sort の値で並び順を決める（ORDER BY） 
+reduceStock(int id, int 
+quantity) 
+int ID の商品の在庫を quantity だけ減らす
+（UPDATE）。更新した件数を返す 
+search の並び順は、sort の値を switch 文（case と break）で次の文字列に置き換えて、SQL の 
+ORDER BY の後ろにつなげます。ORDER BY の後ろには ? が使えないため、受け取った値をそのまま SQL につ
+なげてはいけません。 
+sort の値 ORDER BY の後ろ 
+idAsc（どれにも当てはまらないときも） p.id ASC 
+idDesc p.id DESC 
+priceAsc p.price ASC 
+priceDesc p.price DESC 
+CategoryDAO 
+メソッド 戻り値 内容 
+findAll() List<Category> すべてのカテゴリを ID の小さい順に取り出す 
+UserDAO 
+メソッド 戻り値 内容 
+findByNameAndPassword(String 
+name, String password) 
+User 名前とパスワードが一致するユーザーを 1件取り出す。い
+なければ null。role の確認は Servlet で行う 
+OrderDAO 
+メソッド 戻り値 内容 
+insert(Order order) int 注文を登録する（配送方法の名前と送料も入れる。13 
+メソッド 戻り値 内容 
+ordered_at は書かなくてよい。今の日時が自動で入
+る）。登録した件数を返す 
+findByUserId(int userId) List<Order> その人の注文を、新しい順（ID の大きい順）に取り出す 
+findAll() List<Order> すべての注文を新しい順に取り出す。users と JOIN し
+て、注文した人の名前も入れる 
+sumByProduct() List<Sales> 商品名ごとに、数量の合計と金額の合計を取り出す
+（GROUP BY） 
+sumByCategory() List<Sales> カテゴリ名ごとに、数量の合計と金額の合計を取り出す
+（category と JOIN して GROUP BY） 
+sumAll() int すべての注文の金額（価格 × 数量）の合計を返す。
+送料は入れない。注文がなければ 0 
+5.3 util パッケージ（配布ファイル） 
+どちらも static メソッドなので、new でオブジェクトを作らずに「クラス名.メソッド名()」で呼び出します。 
+DBManager 
+メソッド 戻り値 内容 
+getConnection() Connection shopdb に接続する。
+DBManager.getConnection() で呼び出す 
+Validator 
+メソッド 戻り値 内容 
+validateProduct(String name, 
+String price, String stock) 
+List<String> 商品の登録の入力をチェックし、エラーメッセージ（M-03
+〜M-07）を返す。エラーがなければ空の List 
+validateOrder(String quantity) List<String> 注文の数量をチェックし、エラーメッセージ（M-09）を返
+す。エラーがなければ空の List 
+isNumberAtLeast(String value, 
+int min) 
+boolean value が数字で、min 以上なら true。数字でないとき
+（NumberFormatException）や空のときは false。
+上の 2つのメソッドの中で使っている 
+使い方の例（Servlet の中） 
+使う場面 書き方 
+商品の登録（F-16） List<String> errors = Validator.validateProduct(name, price, 
+stock); 
+注文（F-06） List<String> errors = Validator.validateOrder(quantity); 
+名前とパスワードの確認はデータベースを使うため、Servlet で行い、エラーがあれば同じ 
+errors に追加する 
+エラーがあるか if (!errors.isEmpty()) { … 入力画面に戻す … } 
+ 14 
+6. 画面とやり取りする名前 
+6.1 フォームの name（ブラウザ → Servlet） 
+画面 name 内容 
+Product Detail id 削除する商品の ID（hidden） 
+Add Product name、categoryId、price、stock 登録する商品の内容 
+Admin Login name、password ログインする人 
+Shop keyword、categoryId、sort 検索・絞り込み・並び替えの条件 
+Order id、name、password、quantity、
+deliveryName 
+商品の ID（hidden）、注文する人、数
+量、配送方法 
+（URL） id /productDetail?id=1 などで送る商品の 
+ID 
+ 
+6.2 request に預ける名前（Servlet → JSP） 
+名前 型 使う JSP 
+productList List<Product> productList.jsp、shop.jsp 
+product Product productDetail.jsp、shopDetail.jsp、
+order.jsp 
+categoryList List<Category> productAdd.jsp、shop.jsp 
+errors List<String> productAdd.jsp、login.jsp、order.jsp 
+name、categoryId、price、stock String productAdd.jsp（エラーのときに入力した値
+を残す） 
+name String login.jsp（エラーのときに入力した名前を残
+す） 
+deliveryList List<Delivery> order.jsp（配送方法のプルダウン） 
+name、quantity、deliveryName String order.jsp（エラーのときに入力した値を残
+す） 
+keyword、categoryId、sort String shop.jsp（選んだ条件を残す） 
+count int shop.jsp（見つかった件数） 
+order Order orderDone.jsp（今回の注文） 
+orderList List<Order> orderDone.jsp（購入履歴）、
+orderList.jsp 
+productSales、categorySales List<Sales> sales.jsp 
+totalSales int sales.jsp 
+ 15 
+7. データベース 
+テーブル・列・初期データは「DB定義書」を参照してください。shopdb_setup.sql を実行すると、すべてのテーブル
+と初期データが作られます。 

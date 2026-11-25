@@ -1,0 +1,388 @@
+1 
+ECサイト 画面設計書 
+ECサイト（shopapp） 
+ 
+ 
+文書名 ECサイト 画面設計書 
+システム名 ECサイト（shopapp） 
+版数 2.0 
+作成日 2026-10-17 
+作成者 Kana 
+ 
+この文書は、要件定義書で決めた機能を、利用者から見える画面としてどう実現するかをまとめたものです（基本設
+計）。画面の一覧とつながり、画面ごとの項目、メッセージを決めます。プログラムの作り方は機能設計書で決めま
+す。 
+ 2 
+改訂履歴 
+版数 日付 改訂内容 作成者 
+1.0 2026-10-08 初版 Kana 
+1.1 2026-10-14 注文の画面に配送方法と送料を追加（F-07）。購入履歴の表示（F-
+08）を注文完了の画面に追加 
+Kana 
+2.0 2026-10-17 要件定義書に合わせて画面 ID・機能 ID・メッセージ IDを追加。画面ご
+との項目を項目定義の表に変更。HTML のタグや JSP の書き方などの実
+装の内容は、機能設計書と作業手順書へ移動 
+Kana 
+ 
+関連文書 
+この文書は、次の文書の 1つです。上から順に「何を作るか」から「どう作るか」へ細かくなっていきます。 
+工程 文書 内容 
+要件定義 要件定義書 何を作るか（利用者・機能一覧・非機能要件・制約） 
+基本設計 画面設計書（この文書） 画面の一覧・遷移・項目・メッセージ（利用者から見える仕
+様） 
+基本設計 DB定義書 テーブル・列・初期データ 
+詳細設計 機能設計書 URL と Servlet、処理の流れ、クラス・メソッド 
+詳細設計 クラス図・シーケンス図 クラスのつながりと、処理の順番の図 
+ 3 
+1. 画面の一覧 
+画面 ID 画面名 URL 利用者 機能 ID 
+S-01 Product List（商品の一覧） /products 管理者 F-13 
+S-02 Product Detail（商品の詳細） /productDetail 管理者 F-14、F-15 
+S-03 Add Product（商品の登録） /productAdd 管理者 F-16 
+S-04 Admin Login（管理者ログイン） /login 管理者 F-11 
+S-05 Admin Menu（管理者メニュー） /adminMenu 管理者 F-12 
+S-06 Shop（商品の一覧・最初の画面） /shop 購入者 F-01〜F-04 
+S-07 Product Detail（商品の詳細） /shopDetail 購入者 F-05 
+S-08 Order（注文） /order 購入者 F-06、F-07 
+S-09 Order Complete（注文完了・購入履
+歴） 
+/order（注文した後） 購入者 F-06〜F-08 
+S-10 Order List（注文一覧） /orders 管理者 F-17 
+S-11 Sales Report（売上の集計） /sales 管理者 F-18 
+URL は http://localhost:8080/shopapp の後ろにつながります。機能 ID は要件定義書 4.1 の番号です。 
+1.1 画面のつながり（画面遷移図） 
+ 
+ 
+4 
+2. 画面の共通仕様 
+2.1 すべての画面に共通すること 
+項目 仕様 
+言語 画面に表示する文字は英語にする 
+色 購入者の画面（S-06〜S-09）はオレンジ、管理者の画面は紺を基本の色にする 
+画面の並び 上から「タイトル → メッセージ → 画面の内容 → ほかの画面へのリンク」の順に並べる 
+エラーメッセージ 赤い文字で、入力欄の上に表示する。間違いが複数あるときは、すべて表示する 
+完了メッセージ 緑の太い文字で表示する 
+入力の間違い エラーメッセージを表示し、入力した内容を残す。ただし、パスワードは残さない 
+一覧が 0件のとき 表を表示せず、メッセージ（M-01、M-12）を表示する 
+金額 数字だけを表示する（通貨の単位は表示しない） 
+2.2 メッセージの一覧 
+ID メッセージ 種類 画面 表示する条件 
+M-01 There are no products. 情報 S-01、S-06 表示する商品が 0件のとき 
+M-02 N products found. 情報 S-06 見つかった商品の件数（N に件数が
+入る） 
+M-03 Name is required. エラー S-03 商品名が空のとき 
+M-04 Price is required. エラー S-03 価格が空のとき 
+M-05 Price must be a number of 0 or 
+more. 
+エラー S-03 価格が数字でない、または 0より小さ
+いとき 
+M-06 Stock is required. エラー S-03 在庫が空のとき 
+M-07 Stock must be a number of 0 or 
+more. 
+エラー S-03 在庫が数字でない、または 0より小さ
+いとき 
+M-08 The name or password is wrong. エラー S-04、S-08 名前かパスワードが違う、または利用
+者の種類が違うとき 
+M-09 Quantity must be a number of 1 
+or more. 
+エラー S-08 数量が数字でない、または 1より小さ
+いとき 
+M-10 Please choose a delivery 
+method. 
+エラー S-08 配送方法が Standard・Express 
+のどちらでもないとき 
+M-11 Your order has been placed. 完了 S-09 注文を記録できたとき 
+M-12 There are no orders. 情報 S-10、S-11 注文が 0件のとき 
+2.3 項目定義の表の読み方 5 
+列 意味 
+種類 表示（文字や表を見せる）、入力（文字を入れる）、選択（一覧から選ぶ）、ボタン、リンク、
+メッセージ 
+内容 表示する内容、入力・選択する内容、ボタンやリンクの文字 
+必須 入力・選択で、必ず入れなければならない項目は「○」 
+チェック・動作 入力のチェックの内容（メッセージ ID）、ボタンやリンクを押したときの動作と移る先の画面 
+ 6 
+3. 画面ごとの設計 
+S-01 Product List（商品の一覧） 
+画面 ID S-01 
+URL /products 
+利用者 管理者 
+機能 ID F-13 
+この画面に来る元 S-05、S-02、S-03（登録した後） 
+この画面から移る先 S-02、S-03、S-05 
+ 
+項目定義 
+No 項目名 種類 内容 必須 チェック・動作 
+1 タイトル 表示 Product List   
+2 Add Product リンク Add Product  S-03 に移る 
+3 Back to Menu リンク Back to Menu  S-05 に移る 
+4 商品の一覧 表示 列：ID・Name・Category（カテゴ
+リ名）・Price・Stock 
+すべての商品（在庫 0も含む）を 
+ID の小さい順に表示 
+  
+5 Detail リンク 一覧の各行に表示  その商品の S-02 に移る 
+6 0件のメッセージ メッセージ M-01  商品が 0件のとき、一覧の代わ
+りに表示 
+ 
+7 
+S-02 Product Detail（商品の詳細） 
+画面 ID S-02 
+URL /productDetail?id=商品のID 
+利用者 管理者 
+機能 ID F-14、F-15 
+この画面に来る元 S-01 
+この画面から移る先 S-01 
+補足 指定した ID の商品がないときは、S-01 に移る 
+ 
+項目定義 
+No 項目名 種類 内容 必須 チェック・動作 
+1 タイトル 表示 Product Detail   
+2 商品の詳細 表示 ID・Name・Category・Price・
+Stock 
+  
+3 Delete ボタン Delete  商品を削除して S-01 に移る
+（F-15）。確認の画面は出さ
+ない 
+4 Back to List リンク Back to List  S-01 に移る 
+ 
+8 
+S-03 Add Product（商品の登録） 
+画面 ID S-03 
+URL /productAdd 
+利用者 管理者 
+機能 ID F-16 
+この画面に来る元 S-01、S-05 
+この画面から移る先 S-01（登録した後）、S-03（入力に間違いがあるとき） 
+ 
+入力に間違いがあるときの見本 
+ 
+項目定義 
+No 項目名 種類 内容 必須 チェック・動作 
+1 タイトル 表示 Add Product   
+2 エラーメッセージ メッセージ M-03〜M-07  入力に間違いがあるとき、すべて
+表示 
+3 Name 入力 商品名 ○ 空なら M-03 
+9 
+No 項目名 種類 内容 必須 チェック・動作 
+4 Category 選択 登録されているカテゴリの名前（PC・
+Book・Food・Clothes） 
+○  
+5 Price 入力 価格（0以上の整数） ○ 空なら M-04、数字でないか 0
+より小さいなら M-05 
+6 Stock 入力 在庫（0以上の整数） ○ 空なら M-06、数字でないか 0
+より小さいなら M-07 
+7 Add ボタン Add  入力をチェックし、OK なら商品を
+登録して S-01 に移る。間違い
+があれば S-03 に戻り、入力した
+内容を残す 
+8 Back to List リンク Back to List  S-01 に移る 
+ 10 
+S-04 Admin Login（管理者ログイン） 
+画面 ID S-04 
+URL /login 
+利用者 管理者 
+機能 ID F-11 
+この画面に来る元 S-06 
+この画面から移る先 S-05（ログインできたとき）、S-04（できないとき）、S-06 
+ 
+項目定義 
+No 項目名 種類 内容 必須 チェック・動作 
+1 タイトル 表示 Admin Login   
+2 エラーメッセージ メッセージ M-08  ログインできないとき 
+3 Name 入力 名前 ○  
+4 Password 入力 パスワード（入力した文字は見えない
+ようにする） 
+○  
+5 Login ボタン Login  名前とパスワードが一致し、管理
+者なら S-05 に移る。それ以外
+は M-08 を表示し、名前を残す 
+6 Back to Shop リンク Back to Shop  S-06 に移る 
+ 
+11 
+S-05 Admin Menu（管理者メニュー） 
+画面 ID S-05 
+URL /adminMenu 
+利用者 管理者 
+機能 ID F-12 
+この画面に来る元 S-04、S-01・S-10・S-11 の Back to Menu 
+この画面から移る先 S-01、S-03、S-10、S-11、S-06 
+ 
+項目定義 
+No 項目名 種類 内容 必須 チェック・動作 
+1 タイトル 表示 Admin Menu   
+2 Product List リンク Product List  S-01 に移る 
+3 Add Product リンク Add Product  S-03 に移る 
+4 Order List リンク Order List  S-10 に移る 
+5 Sales Report リンク Sales Report  S-11 に移る 
+6 Logout リンク Logout  S-06 に移る（ログインした状態
+は覚えていないので、画面を移る
+だけ） 
+ 
+12 
+S-06 Shop（商品の一覧・最初の画面） 
+画面 ID S-06 
+URL /shop 
+利用者 購入者（ログイン不要） 
+機能 ID F-01、F-02、F-03、F-04 
+この画面に来る元 最初に開く画面。S-07、S-09、S-04、S-05 
+この画面から移る先 S-07、S-04 
+補足 検索・絞り込み・並び替えの条件は、表示し直した後も残す 
+ 
+項目定義 
+No 項目名 種類 内容 必須 チェック・動作 
+1 タイトル 表示 Shop   
+2 Keyword 入力 商品名の一部（空なら条件にしな
+い） 
+ F-02 
+3 Category 選択 All categories、またはカテゴリの名
+前（最初は All categories） 
+ F-03 
+4 Search ボタン Search  すべての条件で一覧を表示し直
+す 
+5 並び順 選択 ID: low to high（最初）／ID: 
+high to low／Price: low to high
+／Price: high to low 
+ F-04 
+6 Sort ボタン Sort  Search と同じ（すべての条件
+で表示し直す） 
+7 件数 メッセージ M-02   
+8 商品の一覧 表示 列：Name・Category・Price 
+在庫が 1以上の商品だけを、選んだ
+並び順で表示 
+ F-01 
+13 
+No 項目名 種類 内容 必須 チェック・動作 
+9 Detail リンク 一覧の各行に表示  その商品の S-07 に移る 
+10 0件のメッセージ メッセージ M-01  商品が 0件のとき、一覧の代わ
+りに表示 
+11 Admin Login リンク Admin Login  S-04 に移る 
+ 14 
+S-07 Product Detail（購入者用の商品の詳細） 
+画面 ID S-07 
+URL /shopDetail?id=商品のID 
+利用者 購入者 
+機能 ID F-05 
+この画面に来る元 S-06、S-08 
+この画面から移る先 S-08、S-06 
+補足 指定した ID の商品がないときは、S-06 に移る 
+ 
+項目定義 
+No 項目名 種類 内容 必須 チェック・動作 
+1 タイトル 表示 商品名   
+2 商品の詳細 表示 Category・Price・Stock   
+3 Order ボタン Order  その商品の S-08 に移る 
+4 Back to Shop リンク Back to Shop  S-06 に移る 
+ 
+15 
+S-08 Order（注文） 
+画面 ID S-08 
+URL /order?id=商品のID 
+利用者 購入者 
+機能 ID F-06、F-07 
+この画面に来る元 S-07 
+この画面から移る先 S-09（注文できたとき）、S-08（入力に間違いがあるとき）、S-07 
+ 
+入力に間違いがあるときの見本 
+ 
+項目定義 
+No 項目名 種類 内容 必須 チェック・動作 
+1 タイトル 表示 Order   
+2 注文する商品 表示 Product・Price・Stock   
+3 エラーメッセージ メッセージ M-08〜M-10  入力に間違いがあるとき、すべて
+表示 
+16 
+No 項目名 種類 内容 必須 チェック・動作 
+4 Name 入力 購入者の名前 ○ 名前とパスワードが一致しない、
+または購入者でないなら M-08 
+5 Password 入力 パスワード（入力した文字は見えない
+ようにする） 
+○ 同上 
+6 Quantity 入力 数量（1以上の整数） ○ 数字でないか 1より小さいなら 
+M-09 
+7 Delivery 選択 Standard（最初）／Express ○ どちらでもないなら M-10 
+8 Order ボタン Order  入力をチェックし、OK なら注文を
+記録して S-09 に移る。間違い
+があれば S-08 に戻り、Name・
+Quantity・Delivery を残す 
+9 送料の説明 表示 Standard: 5000 (free if the 
+amount is 50000 or more) / 
+Express: 10000 
+  
+10 Back リンク Back  S-07 に移る 
+ 17 
+S-09 Order Complete（注文完了・購入履歴） 
+画面 ID S-09 
+URL /order（注文した後の画面） 
+利用者 購入者 
+機能 ID F-06、F-07、F-08 
+この画面に来る元 S-08 
+この画面から移る先 S-06 
+補足 この画面で再読み込みすると、同じ注文がもう一度記録される（要件定義書 7. 制約・前提 
+No.3） 
+ 
+項目定義 
+No 項目名 種類 内容 必須 チェック・動作 
+1 タイトル 表示 Thank you for your order   
+2 完了メッセージ メッセージ M-11   
+3 今回の注文 表示 Name・Product・Price・Quantity・
+Amount（金額）・Delivery・
+Delivery Fee（送料）・Total（合
+計） 
+ F-07 
+4 Your Order 
+History 
+表示 列：ID・Date・Product・
+Quantity・Delivery・Total 
+その購入者の注文を新しい順に表示
+（今回の注文を含む） 
+ F-08 
+5 Back to Shop リンク Back to Shop  S-06 に移る 
+ 
+18 
+S-10 Order List（注文一覧） 
+画面 ID S-10 
+URL /orders 
+利用者 管理者 
+機能 ID F-17 
+この画面に来る元 S-05 
+この画面から移る先 S-05 
+ 
+項目定義 
+No 項目名 種類 内容 必須 チェック・動作 
+1 タイトル 表示 Order List   
+2 Back to Menu リンク Back to Menu  S-05 に移る 
+3 注文の一覧 表示 列：ID・Date・Customer・
+Product・Quantity・Amount・
+Delivery・Delivery Fee・Total 
+すべての注文を新しい順に表示 
+  
+4 0件のメッセージ メッセージ M-12  注文が 0件のとき、一覧の代わ
+りに表示 
+ 
+19 
+S-11 Sales Report（売上の集計） 
+画面 ID S-11 
+URL /sales 
+利用者 管理者 
+機能 ID F-18 
+この画面に来る元 S-05 
+この画面から移る先 S-05 
+ 
+項目定義 
+No 項目名 種類 内容 必須 チェック・動作 
+1 タイトル 表示 Sales Report   
+2 Back to Menu リンク Back to Menu  S-05 に移る 
+3 売上の合計 表示 Total sales: 合計（送料は含めな
+い。注文がないときは 0） 
+  
+4 商品別 表示 見出し：By Product 
+列：Product・Quantity・Sales
+（商品名の順） 
+  
+5 カテゴリ別 表示 見出し：By Category 
+列：Category・Quantity・Sales
+（カテゴリの ID の順） 
+  
+6 0件のメッセージ メッセージ M-12  注文が 0件のとき、商品別・カテ
+ゴリ別の代わりに表示 
+ 

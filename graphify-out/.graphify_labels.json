@@ -1,0 +1,14 @@
+{
+  "0": "Adminmenuservlet",
+  "1": "Httpservletrequest Httpservletresponse",
+  "2": "Resultset .insert()",
+  "3": "Dao Drivermanager",
+  "4": ".sales() Httpservletrequest",
+  "5": "Connection Java.sql.connection",
+  "6": "Userdao .findbynameandpassword()",
+  "7": ".calcfee() Override",
+  "8": "Arraylist List",
+  "9": "Category.java Category",
+  "10": "Shopdb Setup.sql",
+  "11": "Shopdb Sample"
+}

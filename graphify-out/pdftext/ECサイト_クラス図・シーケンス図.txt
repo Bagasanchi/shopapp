@@ -1,0 +1,470 @@
+ECサイトクラス図・シーケンス図
+第10〜16回 Webアプリケーション作成（プロジェクト：shopapp）
+関連資料：機能設計書・画面設計書・DB定義書クラス図
+どんなクラスがあり、クラスどうしがどうつながっているかを表す図クラス図の読み方
+クラスを3段の箱で表します。記号の意味は右の表のとおりです
+Product
+- id : int
+- name : String
++ Product(id, name, ...)
++ getName() : String
+クラス名
+フィールド
+メソッド
+「名前 : 型」の順に書きます。
+メソッドの「: 型」は戻り値の型です。
+getter・setter は省略しています。
+記号 意味
+- private（クラスの中だけ）
++ public（どこからでも）
+# protected（子クラスから）
+下線 static（new しないで使う）
+斜体 abstract（抽象クラス・抽象メソッド）
+矢印
+継承（extends）。三角の先が親ク
+ラス
+使う（依存）。矢印の先を使う
+3クラス図①全体図（パッケージ）
+shopapp のクラスは4つのパッケージに分かれています
+servlet
+ProductListServlet
+ProductDetailServlet
+ProductDeleteServlet
+ProductAddServlet
+LoginServlet
+AdminMenuServlet
+ShopServlet
+ShopDetailServlet
+OrderServlet
+OrderListServlet
+SalesServlet
+dao
+ProductDAO
+CategoryDAO
+UserDAO
+OrderDAO
+util
+DBManager
+Validator
+model
+Product
+Category
+User
+Order
+Sales
+Delivery
+StandardDelivery
+ExpressDelivery
+使う 作る
+使う
+接続
+使う（Product などを JSP に預ける）
+JSP とデータベース（shopdb）はクラスではな
+いので、この図には入れていません。どうつながる
+かはシーケンス図で表します。
+4クラス図②商品・カテゴリ・ユーザー
+データベースの1行を表すクラス。フィールドは private、getter・setter は省略
+Product
+- id : int
+- name : String
+- price : int
+- stock : int
+- categoryId : int
+- categoryName : String（第11回）
++ Product(id, name, price, stock, categoryId)
+Category
+- id : int
+- name : String
++ Category(id, name)
+User
+- id : int
+- name : String
+- password : String
+- role : String
++ User(id, name, password, role)
+categoryName はコンストラクタに入れず、JOIN で取り出した
+ときに setter で入れます。
+5クラス図③注文・売上
+注文した時点の商品名・価格・配送方法・送料をコピーして持ちます
+Order
+- id : int
+- productId : int
+- productName : String
+- price : int
+- categoryId : int
+- userId : int
+- quantity : int
+- deliveryName : String
+- deliveryFee : int
+- orderedAt : String
+- userName : String（第16回）
++ Order(id, productId, productName, price, categoryId, 
+userId, quantity, deliveryName, deliveryFee, orderedAt)
++ getAmount() : int
++ getTotal() : int
+Sales
+- name : String
+- quantity : int
+- amount : int
++ Sales(name, quantity, amount)
+getAmount()：price × quantity
+getTotal()：getAmount() ＋
+deliveryFee
+JSP では ${order.amount}・
+${order.total}で表示できます。
+6クラス図④配送方法（抽象クラス）
+第6回の Animal・Dog・Cat と同じ形です（第15回）
+{abstract}
+Delivery
+- name : String
++ Delivery(name)
++ getName() : String
++ calcFee(amount : int) : int
+StandardDelivery
++ StandardDelivery()
++ calcFee(amount : int) : int
+ExpressDelivery
++ ExpressDelivery()
++ calcFee(amount : int) : int
+5000
+（50000以上は0）
+いつも10000
+OrderServlet使う
+Delivery 型の変数で扱うので、
+delivery.calcFee(amount)
+だけで、選んだ配送方法の送料になります
+（ポリモーフィズム）。
+7クラス図⑤ ProductDAO
+メソッドはすべて throws SQLException を付けます
+ProductDAO
+第10・11回
+第11回
+第11回
+第12回
+第13回
+第14回
+第15回
+第11回
++ findAll() : List<Product>
++ findById(id : int) : Product
++ delete(id : int) : int
++ insert(product : Product) : int
++ findInStock() : List<Product>
++ search(keyword : String, categoryId : int, sort : String) : List<Product>
++ reduceStock(id : int, quantity : int) : int
+- makeProduct(rs : ResultSet) : Product
+右の「第○回」はそのメソッドを作る回です（findAll は第11回で JOIN に変更）。戻り値の int は、登録・削除・更新した
+件数です。findById は見つからなければ null を返します。makeProduct は、Product を作る処理をまとめると便利な
+private メソッドです。
+8クラス図⑥そのほかの DAO
+メソッドはすべて throws SQLException を付けます
+CategoryDAO
++ findAll() : List<Category>
+UserDAO
++ findByNameAndPassword(name : String, 
+password : String) : User
+OrderDAO
++ insert(order : Order) : int
++ findByUserId(userId : int) : List<Order>
++ findAll() : List<Order>
++ sumByProduct() : List<Sales>
++ sumByCategory() : List<Sales>
++ sumAll() : int
+- findSales(sql : String) : List<Sales>
+- makeOrder(rs : ResultSet) : Order
+CategoryDAO：第12回
+UserDAO：第13回（role の確認は Servlet で行う）
+OrderDAO：insert は第15回、ほかは第16回
+9クラス図⑦ util（配布ファイル）
+どちらも static メソッド（下線）なので、new しないで「クラス名.メソッド名()」で呼び出します
+DBManager
+- URL : String
+- USER : String
+- PASSWORD : String
++ getConnection() : Connection
+Validator
++ validateProduct(name : String, price : String, stock : String) : List<String>
++ validateOrder(quantity : String) : List<String>
++ isNumberAtLeast(value : String, min : int) : boolean
+使い方の例
+Connection con = DBManager.getConnection();
+List<String> errors = Validator.validateOrder(quantity);
+10クラス図⑧ Servlet（管理者）
+どの Servlet も HttpServlet を継承し、doGet・doPost をオーバーライドします（引数は省略）
+ProductListServlet
+# doGet(...)
+ProductDetailServlet
+# doGet(...)
+ProductDeleteServlet
+# doPost(...)
+ProductAddServlet
+# doGet(...)
+# doPost(...)
+- showForm(...)
+jakarta.servlet.http
+HttpServlet
+# doGet(...) : void
+# doPost(...) : void
+LoginServlet
+# doGet(...)
+# doPost(...)
+AdminMenuServlet
+# doGet(...)
+OrderListServlet
+# doGet(...)
+SalesServlet
+# doGet(...)
+11クラス図⑨ Servlet（購入者）
+OrderServlet は、配送方法の一覧作りと名前から探す処理を private メソッドにまとめています
+ShopServlet
+# doGet(...)
+ShopDetailServlet
+# doGet(...)
+OrderServlet
+# doGet(...)
+# doPost(...)
+- makeDeliveryList() : List<Delivery>
+- findDelivery(deliveryName : String) : Delivery
+jakarta.servlet.http
+HttpServlet
+# doGet(...) : void
+# doPost(...) : void
+protected（#）は、子クラスからオーバーライドできるメソッドです。
+12シーケンス図
+ブラウザから送られた1回のリクエストを、どのオブジェクトがどの順番で処理するかを表す図シーケンス図の読み方
+上から下へ時間が進みます
+ブラウザ XxxServlet XxxDAO shopdb xxx.jsp
+GET /xxx
+findAll()
+SELECT ...
+ResultSet
+Product を作る
+List<Product>
+alt [条件A]
+forward
+[条件B]
+sendRedirect(...)
+HTML
+14シーケンス図の記号
+この資料で使う記号は5つだけです
+記号 意味
+箱と点線 オブジェクト（クラス名）。ブラウザ・JSP・データベースも同じ形で表す。点線は時間の流れ
+実線の矢印（
+ ） メソッドの呼び出し、リクエストの送信、フォワード
+点線の矢印（＞） 戻り値、ブラウザに返す HTML、リダイレクトの指示
+黄色の箱 そのオブジェクトの中で行う処理（private メソッドなど）
+alt の枠 条件で処理が分かれるところ。［］の中が条件、点線で区切る
+オレンジの文字 第16回で追加する処理
+メソッドの引数は、長いときは一部を省略しています。DAO の中のデータベースへの接続（DBManager.getConnection()
+）は省略しています。
+15ProductListServlet（商品の一覧）
+GET /products 一覧を取り出して JSP にフォワードする
+第10・11回
+ブラウザ ProductList Servlet ProductDAO shopdb productList.jsp
+GET /products
+findAll()
+SELECT ... JOIN category ...
+ResultSet
+1行ずつ Product を作り、List に入れる
+List<Product>
+setAttribute("productList", ...)
+forward
+HTML（商品の一覧）
+第10回は JOIN なし（category_id のまま）。第11回で JOIN にしてカテゴリ名を入れる 16ProductDetailServlet（商品の詳細）
+GET /productDetail?id=1 見つからなければ一覧に戻す
+第11回
+ブラウザ ProductDetail Servlet ProductDAO shopdb productDetail.jsp
+GET /productDetail?id=1
+id を int にする
+findById(id)
+SELECT ... WHERE p.id = ?
+ResultSet
+Product（なければ null）
+alt [product が null]
+sendRedirect("products")
+[見つかったとき]
+setAttribute("product", ...)
+forward
+HTML（詳細）
+17ProductDeleteServlet（商品の削除）
+POST /productDelete 削除したらリダイレクトで一覧を開き直させる
+第11回
+ブラウザ ProductDelete Servlet ProductDAO shopdb ProductList Servlet
+POST /productDelete（id）
+delete(id)
+DELETE FROM product WHERE id = ?
+削除した件数
+int
+sendRedirect("products")
+GET /products（ブラウザが自動で送る）
+一覧を表示（ProductList の図と同じ）
+HTML（商品の一覧）
+18ProductAddServlet①（入力画面）
+doGet：GET /productAdd カテゴリのプルダウンのために category を取り出す
+第12回
+ブラウザ ProductAdd Servlet CategoryDAO shopdb productAdd.jsp
+GET /productAdd
+showForm(...)（private）
+findAll()
+SELECT ... FROM category
+ResultSet
+List<Category>
+setAttribute("categoryList", ...)
+forward
+HTML（入力フォーム）
+19ProductAddServlet②（登録）
+doPost：POST /productAdd（name, categoryId, price, stock）入力チェック→ 登録→ リダイレクト
+第12回
+ブラウザ ProductAdd Servlet Validator ProductDAO shopdb productAdd.jsp
+POST /productAdd
+validateProduct(name, price, stock)
+List<String> errors
+alt [errors が空でない]
+showForm(...) で forward
+HTML（エラーと入力値）
+[エラーなし]
+new Product(0, ...)
+insert(product)
+INSERT INTO product ...
+登録した件数
+int
+sendRedirect("products")
+20LoginServlet①（ログイン画面）
+doGet：GET /login ログイン画面を表示するだけ
+第13回
+ブラウザ LoginServlet login.jsp
+GET /login
+forward
+HTML（ログイン画面）
+21LoginServlet②（ログインの確認）
+doPost：POST /login role が admin のユーザーだけ管理者メニューへ
+第13回
+ブラウザ LoginServlet UserDAO shopdb login.jsp
+POST /login（name, password）
+findByNameAndPassword(name, password)
+SELECT ... WHERE name = ? AND password = ?
+ResultSet
+User（いなければ null）
+alt [user がいて、role が "admin"]
+sendRedirect("adminMenu")
+[それ以外]
+errors に The name or password is wrong.
+forward
+HTML（エラーと名前）
+22AdminMenuServlet（管理者メニュー）
+GET /adminMenu メニューを表示するだけ
+第13回
+ブラウザ AdminMenuServlet adminMenu.jsp
+GET /adminMenu
+forward
+HTML（管理者メニュー）
+23ShopServlet（購入者用の商品一覧）
+GET /shop 検索・絞り込み・並び替えの条件で商品を取り出す
+第13・14回
+ブラウザ ShopServlet ProductDAO CategoryDAO shopdb shop.jsp
+GET /shop?keyword=...&categoryId=...&sort=...
+null なら ""・"0"・"idAsc" にする
+search(keyword, categoryId, sort)
+switch (sort) で ORDER BY を決める
+SELECT ... LIKE ? ... ORDER BY ...
+ResultSet
+List<Product>
+findAll()
+SELECT ... FROM category
+ResultSet
+List<Category>
+forward
+HTML（商品の一覧）
+第13回は search の代わりに findInStock()（WHERE stock > 0）を呼び、CategoryDAO は使わない 24ShopDetailServlet（商品の詳細）
+GET /shopDetail?id=1 見つからなければ Shop に戻す
+第14回
+ブラウザ ShopDetail Servlet ProductDAO shopdb shopDetail.jsp
+GET /shopDetail?id=1
+id を int にする
+findById(id)
+SELECT ... WHERE p.id = ?
+ResultSet
+Product（なければ null）
+alt [product が null]
+sendRedirect("shop")
+[見つかったとき]
+setAttribute("product", ...)
+forward
+HTML（詳細と Order ボタン）
+25OrderServlet①（注文フォーム）
+doGet：GET /order?id=1 注文フォームを表示する
+第15回
+ブラウザ OrderServlet ProductDAO shopdb order.jsp
+GET /order?id=1
+findById(id)
+SELECT ... WHERE p.id = ?
+ResultSet
+Product
+makeDeliveryList()（private）
+product・deliveryList を預ける
+forward
+HTML（注文フォーム）
+product が null のときは sendRedirect("shop")（省略） 26OrderServlet②（入力チェック）
+doPost：POST /order（id, name, password, quantity, deliveryName）入力をチェックする
+第15回
+ブラウザ OrderServlet ProductDAO Validator UserDAO order.jsp
+POST /order
+findById(id)
+Product
+validateOrder(quantity)
+List<String> errors
+findByNameAndPassword(name, password)
+User（role が customer か確かめる）
+findDelivery(deliveryName)（private）
+alt [errors が空でない]
+forward
+HTML（エラーと入力値）
+[エラーなし]
+③ doPost：注文の登録へ
+DAO とデータベースのやり取りは省略（前の図と同じ） 27OrderServlet③（注文の登録）
+doPost の続き：エラーがなければ送料を計算し、注文を登録して在庫を減らす
+第15・16回
+ブラウザ OrderServlet Delivery OrderDAO ProductDAO orderDone.jsp
+calcFee(price * quantity)
+int fee
+コピーした値で new Order(...)
+insert(order)
+int
+reduceStock(id, quantity)
+int
+order.setUserName(...)
+findByUserId(userId)
+List<Order>（購入履歴）
+forward
+HTML（注文完了・購入履歴）
+DAO とデータベースのやり取りは省略。Delivery の箱は StandardDelivery または ExpressDelivery のオブジェクト 28OrderListServlet（注文一覧）
+GET /orders orders と users を JOIN して全員の注文を取り出す
+第16回
+ブラウザ OrderList Servlet OrderDAO shopdb orderList.jsp
+GET /orders
+findAll()
+SELECT ... JOIN users ...
+ResultSet
+Order を作り、setUserName(...)
+List<Order>
+setAttribute("orderList", ...)
+forward
+HTML（注文一覧）
+29SalesServlet（売上の集計）
+GET /sales SUM と GROUP BY で集計する
+第16回
+ブラウザ SalesServlet OrderDAO shopdb sales.jsp
+GET /sales
+sumAll()
+SELECT SUM(price * quantity) ...
+int（合計）
+sumByProduct()
+SELECT ... GROUP BY product_name
+List<Sales>
+sumByCategory()
+SELECT ... JOIN category ... GROUP BY ...
+List<Sales>
+totalSales・productSales・categorySales を預ける
+forward
+HTML（売上の集計）
+データベースからの戻り（ResultSet）は省略 30

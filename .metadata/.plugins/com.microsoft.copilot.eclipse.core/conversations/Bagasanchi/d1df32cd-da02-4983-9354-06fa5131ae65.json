@@ -1,0 +1,96 @@
+{
+  "conversationId": "d1df32cd-da02-4983-9354-06fa5131ae65",
+  "title": "change my language to english",
+  "requesterUsername": "Bagasanchi",
+  "responderUsername": "GitHub Copilot",
+  "turns": [
+    {
+      "message": {
+        "text": "change my language to english"
+      },
+      "references": [],
+      "ignoredSkills": [],
+      "userLanguage": "en",
+      "source": "panel",
+      "model": "Auto",
+      "chatMode": "Agent",
+      "customChatModeId": "Agent",
+      "needToolCallConfirmation": true,
+      "turnId": "9981a9e8-558e-46f6-95a8-3f66456cfe0b",
+      "role": "user",
+      "timestamp": "2026-11-11T07:55:48.101678500Z"
+    },
+    {
+      "reply": {
+        "annotations": [],
+        "references": [],
+        "hideText": false,
+        "notifications": [],
+        "followups": [],
+        "errorMessages": [
+          {
+            "error": {
+              "message": "Oops, the model is not supported. Please try again.",
+              "code": 400
+            }
+          }
+        ],
+        "editAgentRounds": [],
+        "panelMessages": [],
+        "steps": [],
+        "agentMessages": [],
+        "data": {},
+        "modelName": "GPT-5.3-Codex",
+        "billingMultiplier": 0.9
+      },
+      "turnId": "76094e91-b9a1-49a5-afc2-832217f354f4",
+      "role": "copilot",
+      "timestamp": "2026-11-11T07:55:48.419794600Z"
+    },
+    {
+      "message": {
+        "text": "hello"
+      },
+      "references": [],
+      "ignoredSkills": [],
+      "userLanguage": "en",
+      "source": "panel",
+      "model": "Auto",
+      "chatMode": "Agent",
+      "customChatModeId": "Agent",
+      "needToolCallConfirmation": true,
+      "turnId": "910ff17e-e130-4491-baa9-b593542ef9a9",
+      "role": "user",
+      "timestamp": "2026-11-11T07:57:42.793783600Z"
+    },
+    {
+      "reply": {
+        "annotations": [],
+        "references": [],
+        "hideText": false,
+        "notifications": [],
+        "followups": [],
+        "errorMessages": [
+          {
+            "error": {
+              "message": "Oops, the model is not supported. Please try again.",
+              "code": 400
+            }
+          }
+        ],
+        "editAgentRounds": [],
+        "panelMessages": [],
+        "steps": [],
+        "agentMessages": [],
+        "data": {},
+        "modelName": "GPT-5.3-Codex",
+        "billingMultiplier": 0.9
+      },
+      "turnId": "f1d276bf-c2cd-48cf-ac16-320788d96014",
+      "role": "copilot",
+      "timestamp": "2026-11-11T07:57:42.823096900Z"
+    }
+  ],
+  "creationDate": "2026-11-11T07:55:48.091163400Z",
+  "lastMessageDate": "2026-11-11T07:57:43.516615700Z"
+}

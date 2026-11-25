@@ -1,0 +1,42 @@
+{
+  "generated_at": "2026-11-11T10:11:37.912587Z",
+  "input_path": "C:\\Users\\User\\Documents\\School\\Object Oriented Programming Class\\shopapp",
+  "total_files_scanned": 33,
+  "extraction_stats": {
+    "nodes": 221,
+    "edges": 501,
+    "hyperedges": 0
+  },
+  "graph_stats": {
+    "nodes": 233,
+    "edges": 0,
+    "communities": 12,
+    "community_labels": {
+      "0": "Adminmenuservlet",
+      "1": "Httpservletrequest Httpservletresponse",
+      "2": "Resultset .insert()",
+      "3": "Dao Drivermanager",
+      "4": ".sales() Httpservletrequest",
+      "5": "Connection Java.sql.connection",
+      "6": "Userdao .findbynameandpassword()",
+      "7": ".calcfee() Override",
+      "8": "Arraylist List",
+      "9": "Category.java Category",
+      "10": "Shopdb Setup.sql",
+      "11": "Shopdb Sample"
+    }
+  },
+  "health_warnings": [
+    "GRAPH HEALTH WARNING: dangling-endpoint edges (109); self-loop edges (1); collapsed (directed) edges (6); collapsed (undirected) edges (6)",
+    "NOTE: Semantic extraction incomplete - chunks 02 and 04 were corrupted/truncated and replaced with placeholders"
+  ],
+  "outputs": [
+    "graphify-out/graph.json",
+    "graphify-out/GRAPH_REPORT.md",
+    "graphify-out/graph.html",
+    "graphify-out/.graphify_extract.json",
+    "graphify-out/.graphify_detect.json",
+    "graphify-out/.graphify_analysis.json",
+    "graphify-out/.graphify_labels.json"
+  ]
+}
