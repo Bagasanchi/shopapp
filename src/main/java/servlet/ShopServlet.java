@@ -4,9 +4,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.*;
 import dao.*;
-import model.*;
 @WebServlet("/shop")
 public class ShopServlet extends PageServlet {
     @Override protected void doGet(HttpServletRequest r,HttpServletResponse s) throws ServletException,IOException {

@@ -1,9 +1,7 @@
 package dao;
 
 import java.sql.*;
-import java.util.*;
 import model.*;
-import util.DBManager;
 
 public class UserDAO extends Jdbc {
     public User findByNameAndPassword(String name,String password) throws SQLException {

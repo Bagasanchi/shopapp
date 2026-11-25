@@ -3,7 +3,6 @@ package dao;
 import java.sql.*;
 import java.util.*;
 import model.*;
-import util.DBManager;
 
 public class CategoryDAO extends Jdbc {
     public List<Category> findAll() throws SQLException {

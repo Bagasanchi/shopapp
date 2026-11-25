@@ -1,12 +1,8 @@
 package servlet;
 import jakarta.servlet.*;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.*;
-import dao.*;
-import model.*;
 abstract class PageServlet extends HttpServlet {
     private static final Set<String> ADMIN=Set.of("/adminMenu","/products","/productDetail","/productDelete","/productAdd","/orders","/sales");
     protected String value(HttpServletRequest r,String field){return Objects.toString(r.getParameter(field),"");}
